@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { User } from "../../Types/types";
 import apiService from "../../ApiService/apiService";
-import { FormStateType } from "../../Types/types";
+import { FormStateType, SearchDataType } from "../../Types/types";
 
 type StateType = {
   users: User[];
@@ -31,14 +31,17 @@ const userReducer = createSlice({
       state.filteredUsers = action.payload;
     },
     filterBy(state, payload: PayloadAction<FormStateType>) {
-      const { key, value } = payload.payload;
-      console.log(key, value);
+      const formData = payload.payload;
 
-      if (key !== null) {
-        state.filteredUsers = state.users.filter(
-          (user) => user[key].toLowerCase().indexOf(value.toLowerCase()) > -1
-        );
-      }
+      state.filteredUsers = state.users.filter((user) => {
+        return formData.every((form) => {
+          const { key, value } = form;
+          if (key && value) {
+            return user[key].toLowerCase().includes(value.toLowerCase());
+          }
+          return true;
+        });
+      });
     },
   },
   extraReducers: (builder) => {

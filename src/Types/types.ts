@@ -6,9 +6,11 @@ interface User {
   phone: string;
 }
 
-type FormStateType = {
+type SearchDataType = {
+  key: "email" | "name" | "phone" | "username";
   value: string;
-  key: "email" | "name" | "phone" | "username" | null;
 };
 
-export { type User, type FormStateType };
+type FormStateType = [SearchDataType] | [];
+
+export { type User, type FormStateType, type SearchDataType };

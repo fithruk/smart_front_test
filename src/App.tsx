@@ -1,10 +1,16 @@
 import React from "react";
+import { Box } from "@mui/material";
 import UserTable from "./Components/Table/Table";
 function App() {
   return (
-    <div className="App">
+    <Box
+      display={"flex"}
+      justifyContent={"center"}
+      alignItems={"center"}
+      height={"100vh"}
+    >
       <UserTable />
-    </div>
+    </Box>
   );
 }
 

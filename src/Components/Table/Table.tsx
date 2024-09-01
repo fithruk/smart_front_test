@@ -13,14 +13,14 @@ import {
 import { useAppSelector, useAppDispatch } from "../../hooks";
 import TableInput from "../Form/Form";
 
-import { getUsers, setUsers } from "../../Store/Reducers/userReducer";
+import { filterBy, getUsers, setUsers } from "../../Store/Reducers/userReducer";
 
 const UserTable: React.FC = () => {
   const dispatch = useAppDispatch();
   const { users, status, error, filteredUsers } = useAppSelector(
     (state) => state.users
   );
-  const { key, value } = useAppSelector((state) => state.form);
+  const form = useAppSelector((state) => state.form);
   const [loading, setLoading] = useState<boolean>(false);
   const [inputNames, setInputNames] = useState<string[]>([]);
 
@@ -44,12 +44,18 @@ const UserTable: React.FC = () => {
     if (status === "failed") return alert(error);
   }, [status, dispatch, error]);
 
+  useEffect(() => {
+    dispatch(filterBy(form));
+  }, [form]);
+
   if (loading) {
     return <CircularProgress />;
   }
 
   return (
-    <Paper sx={{ width: "100%", overflow: "hidden", padding: 2 }}>
+    <Paper
+      sx={{ width: "100%", overflow: "hidden", padding: 2, height: "100vh" }}
+    >
       <Typography variant="h6" gutterBottom>
         User Management
       </Typography>
